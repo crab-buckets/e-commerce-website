@@ -13,10 +13,11 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const authRoutes = require('./routes/auth/auth');
 const cartRoutes = require('./routes/cart/cart');
+const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/shopping-cart';
 
 
 
-mongoose.connect('mongodb://localhost:27017/shopping-cart', 
+mongoose.connect(mongoUrl, 
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
