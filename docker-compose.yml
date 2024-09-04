@@ -11,6 +11,7 @@ services:
             - mongo
         environment:
             - MONGO_URL: mongodb://mongo:27017/shopping-cart
+             # SEED_DB: "true"
         volumes:
             - ./backend:/usr/src/app
         command: node app.js
