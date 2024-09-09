@@ -13,11 +13,9 @@ const LocalStrategy = require('passport-local');
 const User = require('./models/user');
 const authRoutes = require('./routes/auth/auth');
 const cartRoutes = require('./routes/cart/cart');
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/shopping-cart';
 
 
-
-mongoose.connect(mongoUrl, 
+mongoose.connect('mongodb://mongo:27017/shopping-cart',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -56,7 +54,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// seedDB();
+//seedDB();
 
 app.get('/', (req, res) => {
     res.render('landingPage');
@@ -69,6 +67,7 @@ app.use((req, res, next) => {
 })
 
 // Routes
+
 
 app.use(productRoutes);
 app.use(reviewRoutes);

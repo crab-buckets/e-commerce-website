@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+  e-com:
+    container_name: e-com
+    build: .
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+      - backend
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_URL=mongodb://root:admin@mongo:27017/
+      - ME_CONFIG_SITE_BASEURL=/mongoadmin
+    depends_on:
+      - mongo
+    networks:
+      - backend
+      - frontend
+
+  proxy:
+    container_name: proxy
+    image: nginx
+    depends_on:
+      - e-com
+      - mongo-express
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl/localhost.crt:/etc/ssl/certs/localhost.crt
+      - ./ssl/localhost.key:/etc/ssl/private/localhost.key
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - frontend
+
+volumes:
+  mongodata:
+
+networks:
+  backend:
+  frontend:
