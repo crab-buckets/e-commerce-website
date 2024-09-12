@@ -24,4 +24,4 @@ COPY . /usr/src/app
 EXPOSE 3000 
 
 #command to run within the container 
-CMD ["node", "app.js"] 
+CMD ["node", "app.js", "start"] 
